@@ -81,8 +81,38 @@ pick (p): 커밋을 그대로 사용 (기본).
 reword (r): 커밋 내용은 유지하고 메시지만 수정합니다.
 squash (s): 현재 커밋을 바로 이전 커밋과 합쳐서 하나의 커밋으로 통합합니다.
 drop (d): 해당 커밋을 삭제합니다.
+5. 핵심 기능 및 도구
+Source Control (소스 제어) 탭: VS Code 왼쪽 메뉴의 깃 아이콘 (Ctrl+Shift+G)에서 파일의 변경 상태를 시각적으로 관리합니다.
+Changes: git add 하기 전의 수정된 파일.
+Staged Changes: git add 한 후 커밋 대기 중인 파일.
+Git Graph 확장: 복잡한 브랜치 이력과 커밋 로그를 그래프 형태로 보여주는 시각화 도구입니다.
+Diff (파일 비교): 파일을 클릭하면 이전 버전과 현재 버전을 분할 화면으로 비교하여 변경 사항을 쉽게 확인합니다. (git diff 기능)
+Restore Changes (Discard): 작업 디렉터리에서 수정한 내용을 버리고 최신 커밋 상태로 되돌립니다. (git restore 기능)
 
 ##  Week 13
-##  Week 14
-##  Week 15
+버전 되돌리기
+1. Reset 개요
+목적: 특정 과거 커밋으로 브랜치 포인터를 이동시켜, 그 이후의 이력을 **롤백(삭제)**합니다.
+영향 영역: Git 저장소(Repository), 스테이징 영역(Index), 작업 디렉터리(Working Directory) 3가지 영역에 따라 결과가 달라집니다.
+2. reset vs checkout
+git reset [커밋ID]: 브랜치 포인터를 옮겨 이력을 삭제하는 시간 여행입니다.
+git checkout [커밋ID]: 브랜치 포인터는 그대로 두고, 과거 상태를 잠시 확인하는 "구경"입니다. (이력 보존)
+3. 복구 명령어
+git reset --hard ORIG_HEAD: 실수로 reset --hard를 사용했을 때, 리셋하기 직전의 상태로 복구할 수 있는 안전장치입니다.
+1. Revert 개요
+목적: 이미 원격 저장소에 공유된 커밋에 대해 안전하게 취소 기록을 남기고 싶을 때 사용합니다. (Reset 금지 구역에서 사용)
+작동 방식: 취소할 커밋이 했던 변경 사항을 되돌리는 **새로운 커밋(Revert Commit)**을 생성하여 이력에 추가합니다. (원래 커밋은 그대로 보존됨)
+2. Reset과 Revert의 결정적인 차이
+Reset
+과거 이력을 삭제/변경 (비선형적)
+개인 로컬 저장소에서만 사용
+Revert
+새로운 취소 커밋을 추가하여 이력을 보존 (선형적)
+공유된 원격 저장소에서 안전하게 취소할 때 사용
+
+명령: git revert [취소할 커밋ID]
+옵션: git revert --no-edit를 사용하면 에디터 창 없이 기본 메시지로 자동 커밋됩니다.
+충돌 처리: Revert 중 충돌 발생 시, 해결 후 git revert --continue로 재개하거나, git revert --abort로 취소합니다.
+
+
 
