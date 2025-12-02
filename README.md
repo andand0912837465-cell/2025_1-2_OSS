@@ -10,7 +10,6 @@
 ##  Week 7
 ##  Week 8
 ##  Week 9
-Week 10
 # Week 10
 
 ## 1. OSS의 정의 및 의미
@@ -48,140 +47,122 @@ Week 10
 git clean -n   # 삭제될 목록 확인
 git clean -f   # 실제 삭제
 git clean -i   # 대화형 선택 삭제
+````
 
-Week 11
-다양한 브랜치 병합
+---
 
-1) Fast-forward 병합
+# Week 11 — Merge
 
-분기 후 메인 브랜치 변경 없음
+## 1. Fast-forward Merge
 
-병합 커밋 없이 포인터만 이동
+* 이력이 일직선일 때
+* 병합 커밋 없이 포인터만 이동
 
-2) 3-way 병합
+## 2. 3-way Merge
 
-양쪽 모두 커밋이 생겨 이력 분기 발생
+* 이력이 갈라진 상황
+* 공통 조상 기준으로 병합 커밋 생성
 
-공통 조상 기준으로 병합 커밋 생성
+```bash
+git merge --no-ff [branch]  # 강제로 병합 커밋 생성
+```
 
-강제: git merge --no-ff
+## 3. Squash Merge
 
-3) Squash 병합
+* 여러 커밋을 하나로 압축
 
-서브 브랜치 커밋 여러 개 → 하나로 압축
-
-명령: git merge --squash [브랜치명]
-
-이후 사용자가 직접 git commit 실행
-
-병합 충돌 처리
-
-원인: 같은 파일 같은 라인 수정
-
-표시 예시:
-
-<<<<<<< HEAD
-현재 브랜치 내용
-=======
-다른 브랜치 내용
->>>>>>> feature
-
-
-해결 과정:
-
-수정 & 마커 제거
-
-git add
-
+```bash
+git merge --squash [branch]
 git commit
+```
 
-포기: git merge --abort
+## 4. 병합 충돌
 
-Week 12
-브랜치 리베이스(Rebase)
+* 동일 라인을 다르게 수정한 경우
+* 메시지: `CONFLICT (content)`
 
-목적: 히스토리를 일직선(Linear) 으로 만들기
-명령:
+## 5. 충돌 해결
 
-git switch [서브]
-git rebase [메인]
+* 마커 제거 후 스테이징
 
+```bash
+git add [file]
+git commit
+git merge --abort   # 충돌 해결 취소 시
+```
 
-주의: 이미 원격에 공유된 커밋에는 금지
-(동료의 이력 깨짐)
+---
 
-최신 커밋 수정 (--amend)
-파일 수정 → git add → git commit --amend
+# Week 12 — Rebase
 
+## 1. Rebase 개요
 
-가장 최근 커밋 덮어쓰기(새 커밋 ID)
+* 커밋 기준점을 다른 커밋 위로 이동
+* 히스토리를 **직선(Linear)** 으로 유지
 
-과거 커밋 수정 (rebase -i)
-git rebase -i HEAD~[개수]
+## 2. 주의사항
 
+* **공유된 커밋에는 절대 사용 금지**
 
-주요 명령:
+## 3. 최신 커밋 수정
 
-pick : 그대로
+```bash
+git add [file]
+git commit --amend
+```
 
-reword : 메시지만 변경
+## 4. 과거 커밋 수정 (Interactive Rebase)
 
-squash : 이전 커밋과 합치기
+```bash
+git rebase -i HEAD~N
+```
 
-drop : 삭제
+* pick: 그대로
+* reword : 메시지 수정
+* squash: 이전 커밋과 통합
+* drop: 삭제
 
-관련 도구
+## 5. VS Code 기능
 
-Source Control: 변경 상태 시각화
+* Source Control 메뉴
+* Git Graph 확장
+* Diff 비교
+* Restore로 변경 취소
 
-Git Graph: 시각적 이력
+---
 
-Diff: 변경 비교
+# Week 13 — 버전 되돌리기
 
-Restore: 변경 취소 (git restore 기능)
+## 1. Reset 개요
 
-Week 13
-Reset (과거로 이동)
+* 브랜치 포인터 이동 → **이력 삭제 위험**
+* Repository / Index / Working Directory 각각에 영향 다름
 
-브랜치 포인터를 과거 커밋으로 이동 → 이후 이력 삭제 가능
-git reset [커밋ID]
+```bash
+git reset --hard ORIG_HEAD  # 실수 복구 가능
+```
 
-영향 범위에 따라:
+## 2. Revert 개요
 
-Repository
+* 원격 공유 커밋 되돌릴 때 안전
+* 새로운 취소 커밋 추가
 
-Index
-
-Working Directory
-결과 달라짐
-
-reset vs checkout
-
-reset → 이력 삭제
-
-checkout → 이력 보존, 과거 상태 확인
-
-복구:
-
-git reset --hard ORIG_HEAD
-
-Revert (과거 취소 커밋 추가)
-
-공유된 환경에서 안전한 되돌리기
-
-원래 커밋은 보존됨
-
-명령:
-
-git revert [커밋ID]
+```bash
+git revert [commitID]
 git revert --no-edit
+git revert --continue
+git revert --abort
+```
 
+```
 
-충돌 시:
+---
 
-해결 후: git revert --continue
+이제 Git에서 줄바꿈도 완벽하게 보입니다.  
+원하면 제목 색상, 그림, 커밋 그래프 시각화도 추가해 드릴 수 있어요.  
+또 GitHub README 스타일로 아이콘 달아서 더 예쁘게 꾸밀 수도 있고요.
+```
 
-포기: git revert --abort
 
 
 
