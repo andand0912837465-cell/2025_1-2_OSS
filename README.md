@@ -11,66 +11,43 @@
 ##  Week 8
 ##  Week 9
 Week 10
-1. OSS의 정의 및 의미
+# Week 10
 
-OSS(Open Source Software):
-누구나 소스 코드를 자유롭게 보고(공개), 사용, 수정, 배포할 수 있는 라이선스를 만족하는 소프트웨어입니다.
+## 1. OSS의 정의 및 의미
+- **OSS(Open Source Software)**  
+  누구나 소스 코드를 자유롭게 보고, 사용, 수정, 배포할 수 있는 소프트웨어
+- 핵심: 단순한 무료가 아니라 **자유(Freedom) 보장**
+- **OSI(Open Source Initiative)**  
+  공개 소스 정의(OSD) 관리 및 인증 마크 부여
+- **자유 소프트웨어 vs 오픈소스**
+  - 자유 소프트웨어: 사용자의 자유, 철학 강조
+  - 오픈소스: 실용성, 기술적 활용 강조
 
-핵심: 단순히 ‘무료’가 아니라 코드의 자유(Freedom) 보장이 목적입니다.
+## 2. OSS 주요 라이선스
+- **GPL**
+  - Copyleft 강함
+  - 소스 공개 의무 O
+  - 파생물도 반드시 GPL 유지
+- **LGPL**
+  - Copyleft 중간
+  - 동적 링크 시 애플리케이션 공개 X
+- **Apache 2.0**
+  - Permissive 약함
+  - 소스 공개 의무 X
+  - 특허 사용 허용
+- **MIT**
+  - Permissive 매우 약함
+  - 저작권 명시만 하면 자유로움
 
-OSI(Open Source Initiative):
-공개 소스 정의(OSD)를 관리하고 인증 마크를 부여하는 비영리 조직입니다.
+## 3. Stash (임시 저장)
+- 커밋하지 않은 변경 사항을 스택에 저장
+- 브랜치 전환 시 임시 보관에 사용
 
-자유 소프트웨어 vs 오픈소스:
-
-자유 소프트웨어: 사용자 자유 강조(철학적)
-
-오픈소스: 실용성과 기술 강조
-
-2. OSS 주요 라이선스
-
-GPL
-
-Copyleft (강함)
-
-소스 공개 의무 무조건
-
-2차 저작물도 GPL 유지
-
-LGPL
-
-Copyleft (중간)
-
-라이브러리 동적 링크 시 애플리케이션 공개 필요 없음
-
-Apache License 2.0
-
-Permissive (약함)
-
-소스 공개 의무 없음
-
-특허권 사용 허가 포함
-
-MIT License
-
-Permissive (가장 약함)
-
-최소한의 조건(저작권 표시)만 준수
-
-상업·수정·배포 자유
-
-임시 저장(Stash) 개요
-
-목적: 커밋하지 않은 변경 내용을 스택에 임시 저장하여 작업 디렉토리 비우기
-영향: 작업 디렉토리 + 스테이징 영역 변경 모두 저장
-
-Untracked 파일 삭제 (git clean)
-
-git clean -n : 삭제될 파일 목록 미리 보기
-
-git clean -f : 강제 삭제
-
-git clean -i : 대화형 선택 삭제
+## 4. Untracked 파일 삭제
+```bash
+git clean -n   # 삭제될 목록 확인
+git clean -f   # 실제 삭제
+git clean -i   # 대화형 선택 삭제
 
 Week 11
 다양한 브랜치 병합
