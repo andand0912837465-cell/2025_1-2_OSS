@@ -221,157 +221,169 @@ Git은 **HEAD**라는 포인터를 사용하여 현재 작업 중인(최신) 커
   * **역할**: 대신 \*\*개인 접근 토큰(PAT)\*\*을 생성하여 Push/Pull 등의 원격 저장소 접근 시 인증 수단으로 사용해야 합니다.
   * **인증 방법**: `git push` 실행 시 브라우저를 통한 인증 화면이 나타나거나, 생성한 PAT를 직접 입력하여 인증을 수행합니다 지역과 원격 저장소 브랜치 연동.pdf].
 
-##  Week 10
-## 1. OSS의 정의 및 의미
-- **OSS(Open Source Software)**  
-  누구나 소스 코드를 자유롭게 보고, 사용, 수정, 배포할 수 있는 소프트웨어
-- 핵심: 단순한 무료가 아니라 **자유(Freedom) 보장**
-- **OSI(Open Source Initiative)**  
-  공개 소스 정의(OSD) 관리 및 인증 마크 부여
-- **자유 소프트웨어 vs 오픈소스**
-  - 자유 소프트웨어: 사용자의 자유, 철학 강조
-  - 오픈소스: 실용성, 기술적 활용 강조
+## Week 10
 
-## 2. OSS 주요 라이선스
-- **GPL**
-  - Copyleft 강함
-  - 소스 공개 의무 O
-  - 파생물도 반드시 GPL 유지
-- **LGPL**
-  - Copyleft 중간
-  - 동적 링크 시 애플리케이션 공개 X
-- **Apache 2.0**
-  - Permissive 약함
-  - 소스 공개 의무 X
-  - 특허 사용 허용
-- **MIT**
-  - Permissive 매우 약함
-  - 저작권 명시만 하면 자유로움
+OSS 라이선스 및 Stash, Untracked 파일 정리
 
-## 3. Stash (임시 저장)
-- 커밋하지 않은 변경 사항을 스택에 저장
-- 브랜치 전환 시 임시 보관에 사용
+### 1\. OSS의 정의 및 의미
 
-## 4. Untracked 파일 삭제
+  * OSS (Open Source Software): 누구나 소스 코드를 자유롭게 보고, 사용, 수정, 배포할 수 있는 소프트웨어입니다.
+  * 핵심은 단순한 무료가 아니라 **자유(Freedom) 보장**에 있습니다.
+  * OSI (Open Source Initiative): 공개 소스 정의(OSD)를 관리하고 인증 마크를 부여합니다.
+  * 자유 소프트웨어 vs 오픈소스:
+      * 자유 소프트웨어: 사용자의 자유, 철학을 강조합니다.
+      * 오픈소스: 실용성, 기술적 활용을 강조합니다.
+
+-----
+
+### 2\. OSS 주요 라이선스
+
+| 라이선스 | Copyleft 강도 | 소스 공개 의무 | 특징 |
+| :--- | :--- | :--- | :--- |
+| GPL | 강함 | O | 파생물도 반드시 GPL을 유지해야 합니다. |
+| LGPL | 중간 | 동적 링크 시 애플리케이션 공개 X | |
+| Apache 2.0 | 약함 (Permissive) | X | 특허 사용을 허용합니다. |
+| MIT | 매우 약함 (Permissive) | X | 저작권 명시만 하면 자유롭습니다. |
+
+-----
+
+### 3\. Stash (임시 저장)
+
+  * 커밋하지 않은 변경 사항을 스택에 임시로 저장합니다.
+  * 주로 브랜치 전환 시 작업 내용을 임시 보관하는 데 사용됩니다.
+
+### 4\. Untracked 파일 삭제
+
+버전 관리 대상이 아닌(untracked) 파일을 삭제합니다.
+
+| 명령 (Command) | 기능 |
+| :--- | :--- |
+| `git clean -n` | 삭제될 목록을 확인합니다 (Dry run). |
+| `git clean -f` | 실제 삭제를 수행합니다. |
+| `git clean -i` | 대화형으로 선택하여 삭제할 수 있습니다. |
+
+-----
+
+## Week 11
+
+브랜치 병합 (Merge)
+
+### 1\. Fast-forward Merge
+
+  * 브랜치 이력이 일직선상에 있을 때 발생합니다.
+  * 별도의 병합 커밋(Merge Commit) 없이 포인터만 최신 커밋으로 이동합니다.
+
+### 2\. 3-way Merge
+
+  * 개발 이력이 갈라져 공통 조상(Common Ancestor)이 있는 상황에서 발생합니다.
+  * 공통 조상을 기준으로 변경 사항을 통합하여 **새로운 병합 커밋**을 생성합니다.
+  * 명령 예시:
+    ```bash
+    git merge --no-ff [branch] # 강제로 병합 커밋을 생성합니다.
+    ```
+
+### 3\. Squash Merge
+
+  * 특정 브랜치(또는 여러 커밋)의 모든 변경 이력을 하나의 커밋으로 압축하여 병합합니다.
+  * 명령 예시:
+    ```bash
+    git merge --squash [branch] # 변경 내용을 병합 커밋으로 만들기 위해 스테이징합니다.
+    git commit # 압축된 하나의 커밋으로 저장합니다.
+    ```
+
+### 4\. 병합 충돌 (Merge Conflict)
+
+  * 두 브랜치에서 동일한 파일의 동일한 라인을 다르게 수정한 경우에 발생합니다.
+  * Git은 자동으로 병합할 수 없어 개발자에게 충돌 해결을 요청합니다.
+  * 충돌 발생 시 메시지: `CONFLICT (content)`
+
+### 5\. 충돌 해결
+
+  * 충돌 파일에 삽입된 충돌 마커(`<<<<<<<`, `=======`, `>>>>>>>`)를 제거하고 원하는 내용으로 수정합니다.
+  * 수정된 파일을 스테이징 영역에 추가(`git add`)하고, 커밋(`git commit`)하여 병합을 완료합니다.
+  * 충돌 해결 취소 시:
+    ```bash
+    git merge --abort # 병합 시도를 취소하고 병합 전 상태로 되돌립니다.
+    ```
+
+-----
+
+## Week 12
+
+커밋 재배치 (Rebase) 및 히스토리 수정
+
+### 1\. Rebase 개요
+
+  * 브랜치의 커밋 기준점을 다른 커밋 위로 이동시켜 히스토리를 재구성합니다.
+  * 결과적으로 커밋 히스토리를 **직선(Linear)** 형태로 깔끔하게 유지할 수 있습니다.
+
+### 2\. 주의사항
+
+  * **이미 원격 저장소에 공유된(Push된) 커밋에는 절대 Rebase를 사용하지 않아야 합니다.** 히스토리가 변경되어 다른 팀원과 충돌을 일으킬 수 있습니다.
+
+### 3\. 최신 커밋 수정 (`commit --amend`)
+
+가장 최근의 커밋(HEAD)을 수정합니다. 커밋 메시지나 내용을 변경할 수 있습니다.
+
 ```bash
-git clean -n   # 삭제될 목록 확인
-git clean -f   # 실제 삭제
-git clean -i   # 대화형 선택 삭제
-````
-
----
-
-# Week 11 — Merge
-
-## 1. Fast-forward Merge
-
-* 이력이 일직선일 때
-* 병합 커밋 없이 포인터만 이동
-
-## 2. 3-way Merge
-
-* 이력이 갈라진 상황
-* 공통 조상 기준으로 병합 커밋 생성
-
-```bash
-git merge --no-ff [branch]  # 강제로 병합 커밋 생성
+git add [file] # 수정된 파일이 있다면 스테이징
+git commit --amend # 최신 커밋을 덮어씁니다.
 ```
 
-## 3. Squash Merge
+### 4\. 과거 커밋 수정 (Interactive Rebase)
 
-* 여러 커밋을 하나로 압축
-
-```bash
-git merge --squash [branch]
-git commit
-```
-
-## 4. 병합 충돌
-
-* 동일 라인을 다르게 수정한 경우
-* 메시지: `CONFLICT (content)`
-
-## 5. 충돌 해결
-
-* 마커 제거 후 스테이징
-
-```bash
-git add [file]
-git commit
-git merge --abort   # 충돌 해결 취소 시
-```
-
----
-
-# Week 12 — Rebase
-
-## 1. Rebase 개요
-
-* 커밋 기준점을 다른 커밋 위로 이동
-* 히스토리를 **직선(Linear)** 으로 유지
-
-## 2. 주의사항
-
-* **공유된 커밋에는 절대 사용 금지**
-
-## 3. 최신 커밋 수정
-
-```bash
-git add [file]
-git commit --amend
-```
-
-## 4. 과거 커밋 수정 (Interactive Rebase)
+`HEAD`로부터 $\text{N}$단계 이전 커밋까지 대화형으로 수정합니다.
 
 ```bash
 git rebase -i HEAD~N
 ```
 
-* pick: 그대로
-* reword : 메시지 수정
-* squash: 이전 커밋과 통합
-* drop: 삭제
+| 명령 (Action) | 기능 |
+| :--- | :--- |
+| `pick` | 커밋을 그대로 유지합니다. |
+| `reword` | 커밋 메시지를 수정합니다. |
+| `squash` | 이전 커밋과 통합하여 하나의 커밋으로 만듭니다. |
+| `drop` | 해당 커밋을 히스토리에서 삭제합니다. |
 
-## 5. VS Code 기능
+### 5\. VS Code 기능 활용
 
-* Source Control 메뉴
-* Git Graph 확장
-* Diff 비교
-* Restore로 변경 취소
+  * Source Control 메뉴: Git 상태 및 기본 명령을 GUI로 수행합니다.
+  * Git Graph 확장: 커밋 히스토리 및 브랜치 상태를 시각적인 그래프로 보여줍니다.
+  * Diff 비교: 파일 간 변경 내용을 쉽게 비교할 수 있습니다.
+  * Restore로 변경 취소: `git restore` 명령을 GUI로 실행하여 작업 내용을 되돌릴 수 있습니다.
 
----
+-----
 
-# Week 13 — 버전 되돌리기
+## Week 13
 
-## 1. Reset 개요
+버전 되돌리기 (Reset & Revert)
 
-* 브랜치 포인터 이동 → **이력 삭제 위험**
-* Repository / Index / Working Directory 각각에 영향 다름
+### 1\. Reset 개요
 
-```bash
-git reset --hard ORIG_HEAD  # 실수 복구 가능
-```
+  * 브랜치 포인터를 이동시켜 이전 커밋으로 돌아가며, 이 과정에서 **이력 삭제 위험**이 있습니다.
+  * 저장소(`.git` 폴더) / 인덱스(Staging Area) / 작업 디렉토리(Working Directory) 각각에 다르게 영향을 줍니다.
+  * 실수로 `reset --hard`를 실행한 경우 복구:
+    ```bash
+    git reset --hard ORIG_HEAD # reset 하기 직전 상태로 복구
+    ```
 
-## 2. Revert 개요
+| 옵션 (Mode) | 브랜치 포인터 이동 | Index 영향 | Working Directory 영향 |
+| :--- | :--- | :--- | :--- |
+| `--soft` | O | X | X |
+| `--mixed` (기본) | O | O (변경 내용만 남김) | X |
+| `--hard` | O | O | O (변경 내용까지 모두 삭제) |
 
-* 원격 공유 커밋 되돌릴 때 안전
-* 새로운 취소 커밋 추가
+### 2\. Revert 개요
 
-```bash
-git revert [commitID]
-git revert --no-edit
-git revert --continue
-git revert --abort
-```
-
-```
-
----
-
-이제 Git에서 줄바꿈도 완벽하게 보입니다.  
-원하면 제목 색상, 그림, 커밋 그래프 시각화도 추가해 드릴 수 있어요.  
-또 GitHub README 스타일로 아이콘 달아서 더 예쁘게 꾸밀 수도 있고요.
-```
+  * 이미 원격 저장소에 공유된 커밋을 되돌릴 때 **안전하게** 사용합니다.
+  * 되돌리고자 하는 커밋의 변경 사항을 취소하는 **새로운 취소 커밋**을 히스토리에 추가합니다. 기존 이력은 그대로 남습니다.
+  * 명령 예시:
+    ```bash
+    git revert [commitID] # 특정 커밋의 변경을 되돌리는 새로운 커밋을 생성합니다.
+    git revert --no-edit # 커밋 메시지 수정 없이 바로 생성합니다.
+    git revert --continue # 충돌 해결 후 되돌리기를 계속합니다.
+    git revert --abort # 되돌리기 작업을 취소합니다.
+    ```
 
 
 
